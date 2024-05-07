@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Harsha's Thesis</title>
+      <link rel="icon" type="image/png" href="C:\Users\Harsh\Downloads\favicon_io\favicon.ico" sizes="16s*16">
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9P4DEsGBOHHrcq91U04jmL7qNbRurGAw&libraries=visualization,places&callback=initMap"></script>
+      <link rel="stylesheet" href="Mycss.css">
+      </head>
+      <body>
+        <body>
+            <div>
+              <label for="zip-code">Enter ZIP Code:</label>
+              <input type="text" id="zip-code" />
+              <button onclick="searchZipCode()">Search</button>
+              <button onclick="highlightZipCode()">Highlight</button>
+            </div>
+            <div><button onclick="highlightManualGeoJSON()">Highlight Manual Coordinates</button></div>
+            <div id="map" style="height: 700px; width: 100%;"></div>
+   <script>
+    let map;
+    let geocoder;
+    let circles =[];
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat:39.095, lng: -94.59747 }, 
+        zoom: 12,
+      });
+      dataLayer = new google.maps.Data({
+        map: map,
+      });
+
+      geocoder = new google.maps.Geocoder();
+    }
+  
+    function highlightManualGeoJSON() {
+      const zipCodeCoordinates = [
+        { lat: 39.104, lng: -94.602 },
+        { lat: 39.095, lng: -94.604},
+        { lat: 39.095, lng: -94.604},
+        { lat: 39.104, lng: -94.576 },
+        { lat: 39.089, lng: -94.580 },
+        { lat: 39.069, lng: -94.572 },
+        { lat: 39.039, lng: -94.573 },
+        { lat: 39.055, lng: -94.592 },
+        { lat: 39.039, lng: -94.592 },
+        { lat: 39.010, lng: -94.591 },
+        { lat: 38.992, lng: -94.592 },
+        { lat: 39.173, lng: -94.525 },
+        { lat: 39.226, lng: -94.573 },
+        { lat: 39.205, lng: -94.542 },
+        { lat: 39.137, lng: -94.512 },
+        { lat: 39.091, lng: -94.538 },
+        { lat: 39.112, lng: -94.515 },
+        { lat: 39.108, lng: -94.553 },
+        { lat: 39.104, lng: -94.507 },
+        { lat: 39.094, lng: -94.508 },
+        { lat: 39.095, lng: -94.553 },
+        { lat: 39.067, lng: -94.546 },
+        { lat: 39.031, lng: -94.504 },
+        { lat: 39.104, lng: -94.507 },
+        { lat: 39.035, lng: -94.536 },
+        { lat: 38.992, lng: -94.577 },
+        { lat: 38.893, lng: -94.533 },
+        { lat: 39.095, lng: -94.553 },
+        { lat: 39.067, lng: -94.546 },
+        { lat: 39.031, lng: -94.504 },
+        { lat: 39.035, lng: -94.536 },
+        { lat: 38.992, lng: -94.577 },
+        { lat: 39.001, lng: -94.546 },
+        { lat: 39.008, lng: -94.463 },
+        { lat: 38.916, lng: -94.509 },
+        { lat: 38.921, lng: -94.536 },
+        { lat: 38.962, lng: -94.499 },
+        { lat: 38.978, lng: -94.394 },
+        { lat: 38.887, lng: -94.592 },
+        { lat: 38.896, lng: -94.569 },
+        { lat: 38.859, lng: -94.482 },
+        { lat: 39.209, lng: -94.683 },
+        { lat: 39.035, lng: -94.536 },
+        { lat: 39.253, lng: -94.666 },
+        { lat: 39.253, lng: -94.643 },
+        { lat: 39.253, lng: -94.575 },
+        { lat: 39.255, lng: -94.537 },
+        { lat: 39.291, lng: -94.482 },
+        { lat: 39.240, lng: -94.467 },
+        { lat: 39.162, lng: -94.489 }, 
+        { lat: 39.314, lng: -94.666 },
+        { lat: 39.318, lng: -94.649 },
+        { lat: 39.324, lng: -94.561 },
+        { lat: 39.328, lng: -94.527 },
+        { lat: 39.323, lng: -94.485 },
+
+
+      ];
+
+      // Clear previous layers
+      circles.forEach(circle => {
+        circle.setMap(null);
+      });
+      circles = [];
+      zipCodeCoordinates.forEach((coordinates, index) => {
+        const circle = new google.maps.Circle({
+          center: coordinates,
+          radius: 1500, // Adjust the radius as needed (in meters)
+          map: map,
+          fillColor: 'rgba(0, 0, 255, 0.3)', // Blue with 30% transparency
+          strokeColor: 'rgba(0, 0, 255, 0.7)', // Lighter blue with 70% transparency
+          strokeWeight: 2, // Adjust stroke weight as needed
+        });
+
+        circles.push(circle);
+      });
+    }
+    function searchZipCode() {
+      const zipCode = document.getElementById('zip-code').value;
+   geocoder.geocode({ 'address': zipCode }, function (results, status) {
+    if (status == 'OK') {
+      map.setCenter(results[0].geometry.location);
+
+      const marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location,
+      });
+
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+</script>
+  </body>
+</html>
